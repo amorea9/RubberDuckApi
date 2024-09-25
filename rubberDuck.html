@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mr Duck</title>
+    <script src="rubberDuck.js" type="module"></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <header>
+    <div class="logoContainer">
+      <img id="logo" src="images.jpeg" alt="logo" />
+      <p id="duckMessage" class="hidden">Oi there mate!</p>
+    </div>
+  </header>
+  <body>
+    <template id="messageTemplate">
+      <div>
+        <p class="message"></p>
+        <div class="timeStamp"></div>
+      </div>
+    </template>
+    <a href="signIn.html"><button>Sign in</button></a>
+    <div>
+      <input id="textInput" type="text" />
+      <button id="button">Send Message</button>
+      <!-- <button id="toggleHistoryButton">Toggle history</button> -->
+      <button id="clearHistoryButton">Clear history</button>
+      <button id="forceAnswer">Tell me a joke</button>
+    </div>
+    <div id="jokeMessage"></div>
+    <div id="duckHistoryContainer">
+      <p id="duckHistoryHeader">What you have previously told Mr Duck:</p>
+      <div id="messagesContainer"></div>
+    </div>
+  </body>
+</html>

@@ -4,7 +4,7 @@ import express from "express";
 //import routers here
 import messagesRouters from "../routers/messagesRouters.js";
 const app = express();
-const port = 3000;
+const port = 3001;
 //to make express be able to read json
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

@@ -59,7 +59,7 @@ async function createMessageRequest() {
     }),
   };
   //send request to backend using the endpoint for messages
-  const response = await fetch("http://localhost:3000/messages", {
+  const response = await fetch("http://localhost:3001/messages", {
     method: "POST",
     body: JSON.stringify(newMessage),
     headers: {
@@ -72,7 +72,7 @@ async function createMessageRequest() {
 }
 //get all messages fetch
 const getAllMessagesRequest = async () => {
-  const response = await fetch("http://localhost:3000/messages");
+  const response = await fetch("http://localhost:3001/messages");
   const allMessages = await response.json();
   console.log("allMessages", allMessages);
   return allMessages;
@@ -101,7 +101,7 @@ const clearHistory = async () => {
   //DELETES ALL MESSAGES
   try {
     // DELETES ALL MESSAGES
-    const response = await fetch("http://localhost:3000/messages", {
+    const response = await fetch("http://localhost:3001/messages", {
       method: "DELETE",
     });
     // Check if the response is OK (status code in the range 200-299)

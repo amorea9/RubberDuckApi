@@ -1,5 +1,5 @@
 import { connectToDatabase, closeConnectionToDatabase } from "../utils/dbConnection.js";
-
+//ERROR MESSAGES HERE
 //GET all messages
 export async function getAllMessages() {
   const database = await connectToDatabase();

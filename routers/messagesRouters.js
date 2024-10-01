@@ -13,6 +13,7 @@ import { getAllMessages, createMessage, deleteAllMessages } from "../dbQueries/d
 
 // define the home page route
 messagesRouters.get("/", async (req, res) => {
+  //const message= await Message.find({}) an array of modelled data
   try {
     const messages = await getAllMessages();
     res.json(messages);
@@ -23,6 +24,7 @@ messagesRouters.get("/", async (req, res) => {
 // define the about route
 messagesRouters.post("/", async (req, res) => {
   try {
+    //server decides the date with new Date()
     const messageBody = req.body;
     const newMessage = await createMessage(messageBody);
     if (newMessage) {

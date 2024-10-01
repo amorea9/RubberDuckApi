@@ -67,7 +67,10 @@ async function createMessageRequest() {
     },
   });
   const addedMessageObject = await response.json();
+
+  //error handling here
   console.log("addedMessageObject", addedMessageObject);
+  showMessage(addedMessageObject);
   return addedMessageObject;
 }
 //get all messages fetch
@@ -78,22 +81,36 @@ const getAllMessagesRequest = async () => {
   return allMessages;
 };
 
-// template example
-const showMessages = async () => {
+//on load - load messages
+const loadMessages = async () => {
   console.log("showing messages");
   const allMessages = await getAllMessagesRequest();
-
+  console.log(allMessages);
   // Check if we received an array
-  if (Array.isArray(allMessages) && allMessages.length > 0) {
+  if (allMessages.length >= 1) {
     allMessages.forEach((message) => {
-      let temp = document.getElementById("messageTemplate");
-      let clone = temp.content.cloneNode(true);
-      clone.querySelector(".message").textContent = message.textMessage;
-      clone.querySelector(".message").title = message.date;
-      document.getElementById("messagesContainer").appendChild(clone);
+      showMessage(message);
     });
+  } else if (allMessages.length === 1) {
+    showMessage(message);
+    // duckHistoryHeader.textContent = "Sorry, there seems to be no messages here!";
   } else {
-    console.log("There are no messages");
+    console.log("no messages here");
+    duckHistoryHeader.textContent = "There are no messages here";
+  }
+};
+
+//show message - singular
+const showMessage = async (message) => {
+  if (message) {
+    duckHistoryHeader.textContent = "What you have told Mr Duck so far:";
+    let temp = document.getElementById("messageTemplate");
+    let clone = temp.content.cloneNode(true);
+    clone.querySelector(".message").textContent = message.textMessage;
+    clone.querySelector(".message").title = message.date;
+    document.getElementById("messagesContainer").appendChild(clone);
+  } else {
+    console.log("no messages");
   }
 };
 
@@ -120,4 +137,4 @@ const clearHistory = async () => {
 button.addEventListener("click", createMessageRequest);
 clearHistoryButton.addEventListener("click", clearHistory);
 //on load, display the previously saved messages
-window.addEventListener("load", showMessages);
+window.addEventListener("load", loadMessages);

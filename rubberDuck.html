@@ -20,17 +20,19 @@
         <div class="timeStamp"></div>
       </div>
     </template>
+    <div id="stateMessage"></div>
     <a href="signIn.html"><button>Sign in</button></a>
     <div>
       <input id="textInput" type="text" />
       <button id="button">Send Message</button>
+      <span id="errorMessage"></span>
       <!-- <button id="toggleHistoryButton">Toggle history</button> -->
       <button id="clearHistoryButton">Clear history</button>
       <button id="forceAnswer">Tell me a joke</button>
     </div>
     <div id="jokeMessage"></div>
     <div id="duckHistoryContainer">
-      <p id="duckHistoryHeader">What you have previously told Mr Duck:</p>
+      <p id="duckHistoryHeader">What you have told Mr Duck so far:</p>
       <div id="messagesContainer"></div>
     </div>
   </body>

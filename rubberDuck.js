@@ -10,7 +10,8 @@ const clearHistoryButton = document.getElementById("clearHistoryButton");
 const duckHistoryHeader = document.getElementById("duckHistoryHeader");
 const forceAnswer = document.getElementById("forceAnswer");
 const jokeMessage = document.getElementById("jokeMessage");
-
+const stateMessage = document.getElementById("stateMessage");
+const editMessageButton = document.querySelector(".editMessageButton");
 //function to display the duck message
 const displayHidden = () => {
   duckMessage.classList.remove("hidden");
@@ -67,10 +68,14 @@ async function createMessageRequest() {
     },
   });
   const addedMessageObject = await response.json();
-
+  stateMessage.textContent = "Creating your message...";
+  setTimeout(() => {
+    showMessage(addedMessageObject);
+    stateMessage.textContent = "";
+  }, 1500);
   //error handling here
   console.log("addedMessageObject", addedMessageObject);
-  showMessage(addedMessageObject);
+
   return addedMessageObject;
 }
 //get all messages fetch
@@ -93,10 +98,10 @@ const loadMessages = async () => {
     });
   } else if (allMessages.length === 1) {
     showMessage(message);
-    // duckHistoryHeader.textContent = "Sorry, there seems to be no messages here!";
   } else {
     console.log("no messages here");
     duckHistoryHeader.textContent = "There are no messages here";
+    await showMessage();
   }
 };
 
@@ -106,18 +111,52 @@ const showMessage = async (message) => {
     duckHistoryHeader.textContent = "What you have told Mr Duck so far:";
     let temp = document.getElementById("messageTemplate");
     let clone = temp.content.cloneNode(true);
-    clone.querySelector(".message").textContent = message.textMessage;
-    clone.querySelector(".message").title = message.date;
+    const messageField = clone.querySelector(".message");
+    const dateField = clone.querySelector(".timeStamp");
+    messageField.textContent = message.textMessage;
+    dateField.textContent = message.date;
     document.getElementById("messagesContainer").appendChild(clone);
+
+    editMessageButton.addEventListener("click", editMessage);
   } else {
     console.log("no messages");
+    document.getElementById("messagesContainer").textContent = "";
   }
+};
+
+const editMessage = () => {
+  const input = document.createElement("input");
+  input.type = "text";
+  input.value = message.textMessage;
+  input.classList.add("edit-input");
+  // Replace the message text with the input field
+  messageElement.replaceWith(input);
+  // Handle saving the edited message when user presses Enter or clicks outside
+  const saveMessage = () => {
+    message.textMessage = input.value; // Update the message object
+    messageElement.textContent = message.textMessage; // Update the DOM
+    input.replaceWith(messageElement); // Replace input back with message text
+
+    // Optionally, send the updated message to the backend here
+    // Example: await saveUpdatedMessage(message);
+  };
+  // Save on 'Enter' key press
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      saveMessage();
+    }
+  });
+  // Save on losing focus (clicking outside)
+  input.addEventListener("blur", () => {
+    saveMessage();
+  });
+  // Focus on the input field when created
+  input.focus();
 };
 
 const clearHistory = async () => {
   //DELETES ALL MESSAGES
   try {
-    // DELETES ALL MESSAGES
     const response = await fetch("http://localhost:3001/messages", {
       method: "DELETE",
     });
@@ -125,9 +164,14 @@ const clearHistory = async () => {
     if (!response.ok) {
       throw new Error(`Server responded with status: ${response.status}`);
     }
-    const serverFeedback = await response.json();
-    console.log("serverFeedback", serverFeedback);
-    return serverFeedback;
+    stateMessage.textContent = "Deleting history...";
+    setTimeout(async () => {
+      const serverFeedback = await response.json();
+      console.log("serverFeedback", serverFeedback);
+      stateMessage.textContent = "";
+      await loadMessages();
+      return serverFeedback;
+    }, 1500);
   } catch (error) {
     console.error("Error while clearing history:", error);
     throw error; // Rethrow error if needed to be handled by the caller
